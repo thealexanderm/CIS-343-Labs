@@ -2,6 +2,7 @@ import sys
 from scanner import Scanner
 from error_handler import ErrorHandler
 
+
 class Gecko:
     def run(self, source):
         ErrorHandler.had_error = False
@@ -22,6 +23,7 @@ class Gecko:
                 return 0
             self.run(source)
 
+
 def main():
     if len(sys.argv) > 2:
         print("Usage: python3 src/gecko/gecko.py [script", file=sys.stderr)
@@ -29,6 +31,7 @@ def main():
         return 64
     gecko = Gecko()
     return gecko.run_file(sys.argv[1] if len(sys.argv) == 2 else gecko.run_prompt())
+
 
 if __name__ == "__main__":
     sys.exit(main())
