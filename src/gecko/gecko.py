@@ -1,6 +1,7 @@
 import sys
-from scanner import Scanner
+
 from error_handler import ErrorHandler
+from scanner import Scanner
 
 
 class Gecko:

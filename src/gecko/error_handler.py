@@ -1,6 +1,3 @@
-import sys
-
-
 class ErrorHandler:
     had_error = False
 
