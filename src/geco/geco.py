@@ -4,7 +4,7 @@ from error_handler import ErrorHandler
 from scanner import Scanner
 
 
-class Gecko:
+class Geco:
     def run(self, source):
         ErrorHandler.had_error = False
         for token in Scanner(source).scan_tokens():
@@ -27,11 +27,11 @@ class Gecko:
 
 def main():
     if len(sys.argv) > 2:
-        print("Usage: python3 src/gecko/gecko.py [script", file=sys.stderr)
-        print("Or: python3 src/gecko/gecko.py", file=sys.stderr)
+        print("Uso: python3 src/geco/geco.py [archivo]", file=sys.stderr)
+        print("O: python3 src/geco/geco.py", file=sys.stderr)
         return 64
-    gecko = Gecko()
-    return gecko.run_file(sys.argv[1] if len(sys.argv) == 2 else gecko.run_prompt())
+    geco = Geco()
+    return geco.run_file(sys.argv[1]) if len(sys.argv) == 2 else geco.run_prompt()
 
 
 if __name__ == "__main__":

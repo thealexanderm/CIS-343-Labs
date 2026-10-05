@@ -7,5 +7,5 @@ class ErrorHandler:
 
     @staticmethod
     def report(line, where, message):
-        print(f"[line {line}] Error{where}: {message}")
+        print(f"[línea {line}] Error{where}: {message}")
         ErrorHandler.had_error = True

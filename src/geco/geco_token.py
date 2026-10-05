@@ -1,8 +1,8 @@
-from token_type import TokenType
+from token_type import Tipo
 
 
 class Token:
-    def __init__(self, type: TokenType, lexeme: str, literal: object, line: int):
+    def __init__(self, type: Tipo, lexeme: str, literal: object, line: int):
         self.type = type
         self.lexeme = lexeme
         self.literal = literal

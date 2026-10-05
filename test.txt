@@ -1,4 +1,4 @@
 @
 1 + #
-var a = 1;
+sea a = 1;
 "oops

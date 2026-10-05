@@ -1,37 +1,36 @@
 from error_handler import ErrorHandler
-from gecko_token import Token
-from token_type import TokenType as t
+from geco_token import Token
+from token_type import Tipo as t
 
 
 class Scanner:
     def __init__(self, source):
         self.source = source
-        # TODO: initialize the scanner's state.
         self.start = 0
         self.current = 0
         self.line = 1
         self.tokens = []
         self.keywords = {
-            "and": t.AND,
-            "class": t.CLASS,
-            "else": t.ELSE,
-            "false": t.FALSE,
-            "for": t.FOR,
-            "fun": t.FUN,
-            "if": t.IF,
-            "nil": t.NIL,
-            "or": t.OR,
-            "print": t.PRINT,
-            "return": t.RETURN,
-            "super": t.SUPER,
-            "this": t.THIS,
-            "true": t.TRUE,
-            "var": t.VAR,
-            "while": t.WHILE,
+            "y": t.Y,
+            "clase": t.CLASE,
+            "sino": t.SINO,
+            "falso": t.FALSO,
+            "desde": t.DESDE,
+            "defi": t.DEFINICION,
+            "si": t.SI,
+            "nulo": t.NULO,
+            "o": t.O,
+            "imp": t.IMPRIMIR,
+            "retorna": t.RETORNAR,
+            "padre": t.PADRE,
+            "este": t.ESTE,
+            "cierto": t.CIERTO,
+            "sea": t.SEA,
+            "mientras": t.MIENTRAS,
         }
 
     def scan_tokens(self):
-        """Return a list of Token objects, ending with one EOF token.
+        """Return a list of Token objects, ending with one FIN token.
 
         Report lexical errors through ErrorHandler.error(line, message).
         Scanning begins at line 1. Ignore whitespace and // comments.
@@ -40,7 +39,7 @@ class Scanner:
             self.start = self.current
             self.scan_token()
 
-        self.tokens.append(Token(t.EOF, "", None, self.line))
+        self.tokens.append(Token(t.FIN, "", None, self.line))
         return self.tokens
 
     def match(self, expected):
@@ -76,7 +75,7 @@ class Scanner:
             self.advance()
 
         if self.isAtEnd():
-            ErrorHandler.error(self.line, "Unterminated string.")
+            ErrorHandler.error(self.line, "Cadena no cerrada.")
             return
 
     def isDigit(self, c):
@@ -105,51 +104,51 @@ class Scanner:
     def identifier(self):
         while self.isAlphaNumeric(self.peek()):
             self.advance()
-
         text = self.source[self.start : self.current]
         type = self.keywords.get(text)
         if type is None:
-            type = t.IDENTIFIER
+            type = t.IDENTIFICADOR
         self.addToken(type)
 
     def scan_token(self):
         c = self.advance()
         match c:
             case "(":
-                self.addToken(t.LEFT_PAREN)
+                self.addToken(t.PAR_IZQ)
             case ")":
-                self.addToken(t.RIGHT_PAREN)
+                self.addToken(t.PAR_DER)
             case "}":
-                self.addToken(t.RIGHT_BRACE)
+                self.addToken(t.LLAVE_DER)
             case "{":
-                self.addToken(t.LEFT_BRACE)
+                self.addToken(t.LLAVE_IZQ)
             case ",":
-                self.addToken(t.COMMA)
+                self.addToken(t.COMA)
             case ".":
-                self.addToken(t.DOT)
+                self.addToken(t.PUNTO)
             case "-":
-                self.addToken(t.MINUS)
+                self.addToken(t.MENOS_ASIGNAR if self.match("=") else t.MENOS)
             case "+":
-                self.addToken(t.PLUS)
+                self.addToken(t.MAS_ASIGNAR if self.match("=") else t.MAS)
             case ";":
-                self.addToken(t.SEMICOLON)
+                self.addToken(t.PUNTO_Y_COMA)
             case "*":
-                self.addToken(t.STAR)
-            case "!":
-                self.addToken(t.BANG_EQUAL if self.match("=") else t.BANG)
-            case "=":
-                self.addToken(t.EQUAL_EQUAL if self.match("=") else t.EQUAL)
-            case "<":
-                self.addToken(t.LESS_EQUAL if self.match("=") else t.LESS)
-            case ">":
-                self.addToken(t.GREATER_EQUAL if self.match("=") else t.GREATER)
-
+                self.addToken(t.ESTRELLA_ASIGNAR if self.match("=") else t.ESTRELLA)
             case "/":
-                if self.match("/"):
-                    while self.peek() != "\n" and not self.isAtEnd():
-                        self.advance()
-                else:
-                    self.addToken(t.SLASH)
+                self.addToken(t.DIV_ASIGNAR if self.match("=") else t.BARRA)
+            case "!":
+                self.addToken(t.NO_IGUAL if self.match("=") else t.NEGACION)
+            case "=":
+                self.addToken(t.IGUAL_IGUAL if self.match("=") else t.ASIGNAR)
+            case "<":
+                self.addToken(t.MENOR_IGUAL if self.match("=") else t.MENOR)
+            case ">":
+                self.addToken(t.MAYOR_IGUAL if self.match("=") else t.MAYOR)
+            case "%":
+                self.addToken(t.MODULO_ASIGNAR if self.match("=") else t.MODULO)
+
+            case "#":
+                while self.peek() != "\n" and not self.isAtEnd():
+                    self.advance()
 
             case " " | "\r" | "\t":
                 pass
@@ -164,4 +163,4 @@ class Scanner:
                 elif self.isAlpha(c):
                     self.identifier()
                 else:
-                    ErrorHandler.error(self.line, "Unexpected character.")
+                    ErrorHandler.error(self.line, "Carácter no esperado.")
