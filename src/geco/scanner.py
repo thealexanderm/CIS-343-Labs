@@ -90,13 +90,13 @@ class Scanner:
         while self.isDigit(self.peek()):
             self.advance()
 
-        if self.peek() == "." and self.isDigit(self.peekNext()):
+        if self.peek() == "," and self.isDigit(self.peekNext()):
             self.advance()
             while self.isDigit(self.peek()):
                 self.advance()
 
     def isAlpha(self, c):
-        return (c >= "a" and c <= "z") or (c >= "A" and c <= "Z") or (c == "_")
+        return c.isalpha() or (c == "_")
 
     def isAlphaNumeric(self, c):
         return self.isDigit(c) or self.isAlpha(c)
