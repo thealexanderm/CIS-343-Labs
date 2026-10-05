@@ -33,7 +33,7 @@ class Scanner:
         """Return a list of Token objects, ending with one FIN token.
 
         Report lexical errors through ErrorHandler.error(line, message).
-        Scanning begins at line 1. Ignore whitespace and // comments.
+        Scanning begins at line 1. Ignore whitespace and # comments.
         """
         while not self.isAtEnd():
             self.start = self.current
@@ -78,6 +78,10 @@ class Scanner:
             ErrorHandler.error(self.line, "Cadena no cerrada.")
             return
 
+        self.advance()
+        value = self.source[self.start + 1 : self.current - 1]
+        self.addToken(t.CADENA, value)
+
     def isDigit(self, c):
         return c >= "0" and c <= "9"
 
@@ -94,6 +98,8 @@ class Scanner:
             self.advance()
             while self.isDigit(self.peek()):
                 self.advance()
+
+        self.addToken(t.NUMERO, float(self.source[self.start : self.current].replace(",", ".")))
 
     def isAlpha(self, c):
         return c.isalpha() or (c == "_")
