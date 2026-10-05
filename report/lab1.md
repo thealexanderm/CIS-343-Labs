@@ -11,9 +11,9 @@ Course and Section: CIS 343-01<p>
 
 ### Regular Expressions
 
-<p>Number Literals: <br>
-String Literals:<br>
-Identifiers: <p>
+<p>Number Literals: ^\d+(,\d+)?$<br>
+String Literals: ^"[^"]*"$<br>
+Identifiers: ^[^\W\d_]\w*$<p>
 
 ### Design Choices Relative to Lox
 
@@ -53,3 +53,7 @@ python3 test/lab1/test.py
 ## Test Cases
 
 ## Known Limitations
+- Multi-line comments are not supported.
+- Scientific number literals are not supported.
+- String escape sequences are not supported.
+- Error diagnostics are limited to the line number.
