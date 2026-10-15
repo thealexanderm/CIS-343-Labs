@@ -1,7 +1,7 @@
 import unittest
 
-from token_type import Tipo as t
-from scanner import Scanner
+from token_type import Tipo as t # type: ignore
+from scanner import Scanner # type: ignore
 from unittest.mock import patch
 
 from pathlib import Path
