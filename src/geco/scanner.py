@@ -99,7 +99,9 @@ class Scanner:
             while self.isDigit(self.peek()):
                 self.advance()
 
-        self.addToken(t.NUMERO, float(self.source[self.start : self.current].replace(",", ".")))
+        self.addToken(
+            t.NUMERO, float(self.source[self.start : self.current].replace(",", "."))
+        )
 
     def isAlpha(self, c):
         return c.isalpha() or (c == "_")

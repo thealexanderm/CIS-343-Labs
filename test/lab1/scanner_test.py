@@ -1,24 +1,25 @@
 import unittest
 
-from token_type import Tipo as t # type: ignore
-from scanner import Scanner # type: ignore
+from token_type import Tipo as t  # type: ignore
+from scanner import Scanner  # type: ignore
 from unittest.mock import patch
 
 from pathlib import Path
 
 DIR = Path(__file__).parent
 
+
 class TestScanner(unittest.TestCase):
     def assert_tokens_match(self, source, expected_t):
         scanner = Scanner(source)
-        tokens = scanner.scan_tokens() 
+        tokens = scanner.scan_tokens()
         self.assertEqual(len(tokens), len(expected_t))
 
         for actual, (e_type, e_lex, e_lit) in zip(tokens, expected_t):
             self.assertEqual(actual.type, e_type)
             self.assertEqual(actual.lexeme, e_lex)
             self.assertEqual(actual.literal, e_lit)
-    
+
     def test_token_types(self):
         with open(DIR / "testtokens.txt") as f:
             source = f.read()
@@ -64,24 +65,18 @@ class TestScanner(unittest.TestCase):
             (t.CIERTO, "cierto", None),
             (t.SEA, "sea", None),
             (t.MIENTRAS, "mientras", None),
-            (t.FIN, "", None)
+            (t.FIN, "", None),
         ]
         self.assert_tokens_match(source, expected)
 
     def test_comma_decimal(self):
         source = "3,14"
-        expected = [
-            (t.NUMERO, "3,14", 3.14),
-            (t.FIN, "", None)
-        ]
+        expected = [(t.NUMERO, "3,14", 3.14), (t.FIN, "", None)]
         self.assert_tokens_match(source, expected)
 
     def test_number(self):
         source = "3"
-        expected = [
-            (t.NUMERO, "3", 3.0),
-            (t.FIN, "", None)
-        ]
+        expected = [(t.NUMERO, "3", 3.0), (t.FIN, "", None)]
         self.assert_tokens_match(source, expected)
 
     def test_point_decimal(self):
@@ -90,7 +85,7 @@ class TestScanner(unittest.TestCase):
             (t.NUMERO, "3", 3.0),
             (t.PUNTO, ".", None),
             (t.NUMERO, "14", 14.0),
-            (t.FIN, "", None)
+            (t.FIN, "", None),
         ]
         self.assert_tokens_match(source, expected)
 
@@ -103,19 +98,18 @@ class TestScanner(unittest.TestCase):
             (t.IDENTIFICADOR, "íntimo", None),
             (t.IDENTIFICADOR, "ratón", None),
             (t.IDENTIFICADOR, "año", None),
-            (t.FIN, "", None)
+            (t.FIN, "", None),
         ]
         self.assert_tokens_match(source, expected)
 
     def test_comments(self):
-        source = '#this is a comment\n' \
-        'sea a = "this is a string ####"'
+        source = "#this is a comment\n" 'sea a = "this is a string ####"'
         expected = [
             (t.SEA, "sea", None),
             (t.IDENTIFICADOR, "a", None),
             (t.ASIGNAR, "=", None),
-            (t.CADENA, '"this is a string ####"', 'this is a string ####'),
-            (t.FIN, "", None)
+            (t.CADENA, '"this is a string ####"', "this is a string ####"),
+            (t.FIN, "", None),
         ]
         self.assert_tokens_match(source, expected)
 
@@ -123,21 +117,19 @@ class TestScanner(unittest.TestCase):
     def test_unexpected_character(self, mock_error):
         source = "@"
         scanner = Scanner(source)
-        scanner.scan_tokens() 
+        scanner.scan_tokens()
         mock_error.error.assert_called_once_with(1, "Carácter no esperado.")
 
     @patch("scanner.ErrorHandler")
     def test_unterminated_string(self, mock_error):
         source = '"The neverending string....'
         scanner = Scanner(source)
-        scanner.scan_tokens() 
+        scanner.scan_tokens()
         mock_error.error.assert_called_once_with(1, "Cadena no cerrada.")
 
     @patch("scanner.ErrorHandler")
     def test_recovery(self, mock_error):
-        source = '$\n' \
-                'sea a = 5\n' \
-                '"The neverending string....'
+        source = "$\n" "sea a = 5\n" '"The neverending string....'
         scanner = Scanner(source)
         tokens = scanner.scan_tokens()
         mock_error.error.assert_any_call(1, "Carácter no esperado.")

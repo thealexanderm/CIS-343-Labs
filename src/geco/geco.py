@@ -1,19 +1,27 @@
 import sys
-
 from error_handler import ErrorHandler
 from scanner import Scanner
+from parser import Parser
+from interpreter import Interpreter
 
 
 class Geco:
     def run(self, source):
         ErrorHandler.had_error = False
-        for token in Scanner(source).scan_tokens():
-            print(token)
+        tokens = Scanner(source).scan_tokens()
+        parser = Parser(tokens)
+        statements = parser.parse()
+        if ErrorHandler.had_error:
+            return
+
+        print(Interpreter().interpret(statements))
 
     def run_file(self, path):
         with open(path, encoding="utf-8") as source_file:
             self.run(source_file.read())
-        return 65 if ErrorHandler.had_error else 0
+        if ErrorHandler.had_error:
+            return 65
+        return 70 if ErrorHandler.hadRuntimeError else 0
 
     def run_prompt(self):
         while True:

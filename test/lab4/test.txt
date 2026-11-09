@@ -1,0 +1,19 @@
+sea a = "global a";
+sea b = "global b";
+sea c = "global c";
+{
+  sea a = "outer a";
+  sea b = "outer b";
+  {
+    sea a = "inner a";
+    imp a;
+    imp b;
+    imp c;
+  }
+  imp a;
+  imp b;
+  imp c;
+}
+imp a;
+imp b;
+imp c;
