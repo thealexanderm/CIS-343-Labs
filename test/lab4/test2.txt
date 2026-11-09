@@ -1,0 +1,5 @@
+4 + 2;
+imp "one";
+imp cierto;
+imp 1+2;
+imp nulo;
