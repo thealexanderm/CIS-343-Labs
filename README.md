@@ -6,3 +6,5 @@ Course and Section: CIS 343-01<p>
 ### [Lab 1 Report](./report/lab1.md)
 
 ### [Lab 2 Report](./report/lab2.md)
+
+### [Lab 4 Report](./report/lab4.md)
