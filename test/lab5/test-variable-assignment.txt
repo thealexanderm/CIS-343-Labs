@@ -1,0 +1,3 @@
+sea a;
+a = "my variable assignment";
+imp a;

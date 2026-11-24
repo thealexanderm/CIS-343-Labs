@@ -1,0 +1,2 @@
+sea a = "this is a variable";
+imp a;
